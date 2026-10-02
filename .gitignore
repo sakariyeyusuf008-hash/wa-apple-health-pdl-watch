@@ -15,3 +15,6 @@ __pycache__/
 
 # baseline.json is deliberately NOT ignored. It is the thing tomorrow compares
 # against, and it is public HCA drug data - no company or patient information.
+
+# backup made while forcing a test alert
+baseline.json.realtest-backup

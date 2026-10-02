@@ -38,40 +38,33 @@ defaults. Then **close and reopen PowerShell**.
 - Do **not** tick "Add a README" (it creates a branch with a commit in it)
 - Create it
 
-**3. Add the secrets.** In the new repo: **Settings → Secrets and variables →
-Actions → New repository secret**. Add these six:
+**3. Nothing else to configure.**
+
+That's the whole setup. On a coverage change the job posts the alert as a
+comment on an issue in the repo, and **GitHub emails you when that happens** —
+you do not need to configure email, and there is no app password stored
+anywhere. Watch the repo on GitHub and you get the notification.
+
+**Optional:** if you would rather have the alert in your own inbox, add two
+secrets — **Settings → Secrets and variables → Actions → New repository
+secret**:
 
 | Secret | Value |
 |---|---|
-| `PDL_SMTP_HOST` | `smtp.gmail.com` |
-| `PDL_SMTP_PORT` | `587` |
 | `PDL_SMTP_USER` | your Google address |
 | `PDL_SMTP_PASS` | your 16-character app password, no spaces |
-| `PDL_SMTP_FROM` | your Google address |
-| `PDL_SMTP_TO` | who should be notified |
 
-If the form only shows a "New secret" button, that is fine.
+Nothing else. The sender and recipient default to that same address, and the
+server and port are already in the workflow. You then get both the GitHub issue
+and your own email.
 
-**4. Push the code.** In PowerShell, from this folder:
+**4. Test it.** Go to the **Actions** tab, click **WA Apple Health PDL Watch**,
+then **Run workflow**. A green tick means it works. The run page shows the full
+table of the class without opening anything.
 
-```powershell
-cd "C:\Users\yusuf\OneDrive\Documents\WA-PDL-Watcher"
-git init
-git add .
-git commit -m "WA Apple Health PDL watcher"
-git remote add origin https://github.com/YOUR-USERNAME/wa-apple-health-pdl-watch.git
-git push -u origin main
-```
-
-Replace `YOUR-USERNAME`. Git will ask for your GitHub username and a personal
-access token as the password — **not your GitHub password.** If it asks,
-GitHub will show you where to create a token, or use one from
-https://github.com/settings/tokens with the `repo` scope.
-
-**5. Test it.** Go to the **Actions** tab, click **WA Apple Health PDL watch**,
-then **Run workflow**. A green tick and "No changes in the rescue glucagon
-class" means it works. The run page will show the full table of the class
-without you opening the email.
+To see a real alert arrive, make a small edit to `baseline.json` in the GitHub
+web editor and commit it — that gives the job something to report. Then put it
+back.
 
 ---
 
@@ -112,12 +105,23 @@ compare against and will report every product as new.
 1. At 15:20 UTC — 07:20 Pacific in winter, 08:20 in summer — GitHub starts a job
 2. It downloads HCA's live PDL and the pre-release
 3. No change: nothing happens, job stays green
-4. Change: you get the same brief by email, and the run page shows the full
-   table. `baseline.json` is committed back so tomorrow compares against today
+4. Change: the alert is posted to the repo's **Baqsimi coverage change
+   detected** issue and GitHub notifies you. `baseline.json` is committed back
+   so tomorrow compares against today
 
-The run page is worth knowing about. Every run is kept for 90 days with a
-`pdl-history` artifact, so if you ever need to show how long a restriction was
-in place, there is a record.
+The issue is reused and commented on rather than opened fresh each time, so it
+reads as a timeline of changes. That issue, plus every run page, is a record of
+what happened and when — useful if you ever need to show how long a restriction
+was in place.
+
+## Getting the alert by email instead
+
+Two ways, and you can have both:
+
+- **GitHub's own notification** — free, automatic, nothing to set up. Watch the
+  repo at `github.com/sakariyeyusuf008-hash/wa-apple-health-pdl-watch` and
+  GitHub emails you. The full brief is in the issue body.
+- **Your own inbox** — add the two secrets in step 3.
 
 ## When it goes wrong
 

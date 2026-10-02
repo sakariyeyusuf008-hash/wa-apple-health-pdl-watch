@@ -267,6 +267,58 @@ def job_summary(body, title="Baqsimi coverage change"):
         return False
 
 
+ISSUE_TITLE = "Baqsimi coverage change detected"
+
+
+def github_issue(subject, body):
+    """Post the alert as a comment on one long-lived GitHub issue.
+
+    This needs no secrets at all. A GitHub Actions job already holds a
+    GITHUB_TOKEN with issues:write, so there is nothing to configure, nothing
+    to leak, and no app password sitting in a third party's secret store. GitHub
+    emails you when the issue is touched, which is the notification.
+
+    One issue is reused and commented on rather than a new one each time, so the
+    history reads as a timeline of changes instead of a pile of duplicates.
+    """
+    token = os.environ.get("GITHUB_TOKEN")
+    repo = os.environ.get("GITHUB_REPOSITORY")
+    api = os.environ.get("GITHUB_API_URL", "https://api.github.com").rstrip("/")
+    if not token or not repo:
+        return False
+
+    def call(method, path, payload=None):
+        data = json.dumps(payload).encode() if payload is not None else None
+        req = urllib.request.Request(f"{api}{path}", data=data, method=method,
+                                     headers={"Authorization": f"Bearer {token}",
+                                              "Accept": "application/vnd.github+json",
+                                              "User-Agent": UA,
+                                              "X-GitHub-Api-Version": "2022-11-28"})
+        with urllib.request.urlopen(req, timeout=60) as r:
+            raw = r.read()
+        return json.loads(raw) if raw else {}
+
+    try:
+        # find the rolling issue, if it is already open
+        found = call("GET", f"/repos/{repo}/issues?state=open&per_page=100")
+        existing = next((i for i in found if i.get("title") == ISSUE_TITLE
+                         and "pull_request" not in i), None)
+        stamp = dt.datetime.now().strftime("%Y-%m-%d %H:%M UTC")
+        comment = f"### {subject}\n\n{stamp}\n\n{body}"
+        if existing:
+            call("POST", f"/repos/{repo}/issues/{existing['number']}/comments",
+                 {"body": comment})
+            quiet_log(f"commented on issue #{existing['number']}")
+        else:
+            call("POST", f"/repos/{repo}/issues",
+                 {"title": ISSUE_TITLE, "body": comment})
+            quiet_log("opened the rolling coverage issue")
+        return True
+    except Exception as e:
+        log(f"could not post the GitHub issue: {type(e).__name__}: {e}")
+        return False
+
+
 def collect():
     links = discover()
     out = {}
@@ -451,8 +503,11 @@ def email(subject, text, html_body=None):
     try:
         port = int(setting("PDL_SMTP_PORT", "587"))
         msg = EmailMessage()
-        msg["From"] = setting("PDL_SMTP_FROM", "pdl-watch@localhost")
-        msg["To"] = setting("PDL_SMTP_TO", "")
+        sender = setting("PDL_SMTP_FROM") or setting("PDL_SMTP_USER") or "pdl-watch@localhost"
+        msg["From"] = sender
+        # Nobody has ever wanted an alert sent to a different person than it
+        # came from, so the recipient defaults to the sender.
+        msg["To"] = setting("PDL_SMTP_TO") or sender
         msg["Subject"] = subject
         msg.set_content(text)
         if html_body:
@@ -655,8 +710,14 @@ def main():
         f.write(f"PDL change detected {dt.datetime.now():%Y-%m-%d %H:%M}\n\n{text}\n")
 
     sent = email(subject, text, None if a.plain_only else html_body)
+    posted = github_issue(subject, text)
     job_summary(text)
-    print(f"\nEmail: {'sent' if sent else 'NOT sent (see watch.log)'}")
+    if not setting("PDL_SMTP_USER"):
+        print("\nEmail: not configured - see GITHUB-SETUP.md if you want it")
+    else:
+        print(f"\nEmail: {'sent' if sent else 'NOT sent (see watch.log)'}")
+    if posted:
+        print("GitHub: posted to the rolling coverage issue (GitHub will notify you)")
     if a.popup:
         popup("WA PDL change", text[:1800])
     # A change we were built to detect is a successful run, not a broken one.

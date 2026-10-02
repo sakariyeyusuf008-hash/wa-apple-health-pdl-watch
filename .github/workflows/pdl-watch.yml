@@ -12,9 +12,9 @@ on:
   # confirm the setup works
   workflow_dispatch:
 
-# only needs to write back the updated baseline
 permissions:
-  contents: write
+  contents: write   # commit the updated baseline back
+  issues: write     # post the alert as an issue, so GitHub notifies you
 
 # never let two runs fight over the baseline
 concurrency:
@@ -36,12 +36,13 @@ jobs:
 
       - name: Check the PDL for changes
         env:
-          PDL_SMTP_HOST: ${{ secrets.PDL_SMTP_HOST }}
-          PDL_SMTP_PORT: ${{ secrets.PDL_SMTP_PORT }}
+          # These two are public values, not secrets. Nothing to configure.
+          PDL_SMTP_HOST: smtp.gmail.com
+          PDL_SMTP_PORT: "587"
+          # Leave these unset and the alert still reaches you, as a GitHub
+          # issue. Set them only if you want it in your own inbox instead.
           PDL_SMTP_USER: ${{ secrets.PDL_SMTP_USER }}
           PDL_SMTP_PASS: ${{ secrets.PDL_SMTP_PASS }}
-          PDL_SMTP_FROM: ${{ secrets.PDL_SMTP_FROM }}
-          PDL_SMTP_TO: ${{ secrets.PDL_SMTP_TO }}
         run: python pdl_watch.py --ci
 
       - name: Commit the updated baseline

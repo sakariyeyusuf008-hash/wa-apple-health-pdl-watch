@@ -713,11 +713,21 @@ def main():
     posted = github_issue(subject, text)
     job_summary(text)
     if not setting("PDL_SMTP_USER"):
-        print("\nEmail: not configured - see GITHUB-SETUP.md if you want it")
+        print("\nEmail: not configured - the GitHub issue is the alert channel")
     else:
         print(f"\nEmail: {'sent' if sent else 'NOT sent (see watch.log)'}")
     if posted:
-        print("GitHub: posted to the rolling coverage issue (GitHub will notify you)")
+        print("GitHub: posted to the rolling coverage issue (GitHub notifies you)")
+    elif CI[0]:
+        # A change that nobody is told about is the worst outcome this tool has,
+        # so it must never pass quietly.
+        if os.environ.get("GITHUB_REPOSITORY") and not os.environ.get("GITHUB_TOKEN"):
+            print("GitHub: NOT POSTED - GITHUB_TOKEN is missing from this step's "
+                  "environment. The alert was lost.", file=sys.stderr)
+        else:
+            print("GitHub: NOT POSTED - see watch.log in the run's artifact.",
+                  file=sys.stderr)
+        log("a change was detected but the GitHub issue could not be posted")
     if a.popup:
         popup("WA PDL change", text[:1800])
     # A change we were built to detect is a successful run, not a broken one.

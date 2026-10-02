@@ -11,6 +11,14 @@ on:
   # lets you run it by hand from the Actions tab, which is the fastest way to
   # confirm the setup works
   workflow_dispatch:
+  # Fires whenever the baseline changes. This is how the scheduled run's own
+  # commit-back gets verified on the next run: if the commit-back was wrong, the
+  # next run sees a "change" and tells you rather than sitting on it silently.
+  # Safe from loops - a run only commits when it found a difference, and a run
+  # that finds nothing commits nothing, so nothing re-triggers it.
+  push:
+    paths:
+      - baseline.json
 
 permissions:
   contents: write   # commit the updated baseline back
@@ -39,6 +47,11 @@ jobs:
 
       - name: Check the PDL for changes
         env:
+          # GITHUB_TOKEN is NOT automatically exposed to a step as an
+          # environment variable. Without this line the job detects the change
+          # perfectly and then silently fails to tell anyone. That is exactly
+          # what happened on the first attempt.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # These two are public values, not secrets. Nothing to configure.
           PDL_SMTP_HOST: smtp.gmail.com
           PDL_SMTP_PORT: "587"

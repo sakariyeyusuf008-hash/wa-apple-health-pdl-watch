@@ -1,0 +1,17 @@
+# Local machine state - not worth putting in a repo, and history.jsonl would
+# make the diff noisy.
+history.jsonl
+watch.log
+sched.log
+ALERT.txt
+demo_alert.html
+
+# Written only by the Windows installer.
+Setup Email.ps1
+
+__pycache__/
+*.pyc
+*.bak
+
+# baseline.json is deliberately NOT ignored. It is the thing tomorrow compares
+# against, and it is public HCA drug data - no company or patient information.

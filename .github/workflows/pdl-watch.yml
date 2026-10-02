@@ -1,0 +1,69 @@
+name: WA Apple Health PDL watch
+
+# Runs on GitHub's servers, so it works whether or not your laptop is on.
+#
+# 20 15 UTC = 07:20 Pacific in winter, 08:20 Pacific in summer. Deliberately
+# not on the hour - everything in the world fires at :00 and queued runs get
+# delayed.
+on:
+  schedule:
+    - cron: "20 15 * * *"
+  # lets you run it by hand from the Actions tab, which is the fastest way to
+  # confirm the setup works
+  workflow_dispatch:
+
+# only needs to write back the updated baseline
+permissions:
+  contents: write
+
+# never let two runs fight over the baseline
+concurrency:
+  group: pdl-watch
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    # the PDL is a 12.5 MB spreadsheet and the link is often slow
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Check the PDL for changes
+        env:
+          PDL_SMTP_HOST: ${{ secrets.PDL_SMTP_HOST }}
+          PDL_SMTP_PORT: ${{ secrets.PDL_SMTP_PORT }}
+          PDL_SMTP_USER: ${{ secrets.PDL_SMTP_USER }}
+          PDL_SMTP_PASS: ${{ secrets.PDL_SMTP_PASS }}
+          PDL_SMTP_FROM: ${{ secrets.PDL_SMTP_FROM }}
+          PDL_SMTP_TO: ${{ secrets.PDL_SMTP_TO }}
+        run: python pdl_watch.py --ci
+
+      - name: Commit the updated baseline
+        run: |
+          if git diff --quiet -- baseline.json; then
+            echo "No coverage change - nothing to commit."
+            exit 0
+          fi
+          git config user.name  "pdl-watch"
+          git config user.email "pdl-watch@users.noreply.github.com"
+          git add baseline.json
+          git commit -m "PDL baseline update $(date -u +%Y-%m-%dT%H:%MZ)"
+          git push
+          echo "Baseline updated, so tomorrow compares against today."
+
+      - name: Keep the run log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pdl-history
+          path: |
+            history.jsonl
+            ALERT.txt
+          retention-days: 90
+          if-no-files-found: ignore

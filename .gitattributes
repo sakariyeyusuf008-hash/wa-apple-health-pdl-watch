@@ -1,0 +1,7 @@
+# The watcher runs on Linux in GitHub Actions and on Windows on your laptop.
+# Normalise everything to LF in the repository so diffs stay clean, then let
+# the two Windows-specific formats use CRLF when checked out locally.
+* text=auto eol=lf
+
+*.bat text eol=crlf
+*.ps1 text eol=crlf

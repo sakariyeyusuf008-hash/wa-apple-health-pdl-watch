@@ -86,7 +86,7 @@ box, paste the contents, then **Commit changes**.
 | `pdl_watch.py` | this folder |
 | `brief.py` | this folder |
 
-**3.** Add the six secrets as in Route A, step 3.
+**3.** Nothing to configure. There are no secrets to add — see Route A, step 3.
 
 **4.** Now drag-upload the remaining files from this folder, which have no dots
 in their names: `baseline.json`, `README.md`, `test_watch.py`, `test_brief.py`,

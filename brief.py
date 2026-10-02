@@ -228,6 +228,10 @@ def _label_rows(rec, label):
 
 
 def baqsimi_headline(old, new):
+    # Nothing recorded before means "no baseline yet", not "new product".
+    if not _rows(old):
+        return "First reading taken - nothing to compare against yet."
+
     baq_o = [d for d in _rows(old) if BAQSIMI in d["LABEL NAME"].upper()]
     baq_n = [d for d in _rows(new) if BAQSIMI in d["LABEL NAME"].upper()]
     if not baq_o and not baq_n:
@@ -235,7 +239,7 @@ def baqsimi_headline(old, new):
     if baq_o and not baq_n:
         return "Baqsimi has been REMOVED from the list."
     if not baq_o and baq_n:
-        return "Baqsimi has been ADDED to the list."
+        return "Baqsimi has appeared in the list for the first time."
 
     o, n = baq_o[0], baq_n[0]
     out = []
@@ -285,7 +289,19 @@ def _why(old, new, changes):
     paras = []
     baq_o = [d for d in _rows(old) if BAQSIMI in d["LABEL NAME"].upper()]
     baq_n = [d for d in _rows(new) if BAQSIMI in d["LABEL NAME"].upper()]
-    if baq_o and baq_n and baq_o[0].get("PHARMACY PA STATUS") == "Y" \
+
+    # An empty old snapshot means "nothing to compare against", not "the
+    # product is new". Saying "Baqsimi has been ADDED" off an empty baseline
+    # is alarming and untrue, which is the worst way to be wrong.
+    first_run = not _rows(old)
+
+    if first_run:
+        paras.append(
+            "This is the first reading the watcher has taken, so there is "
+            "nothing to compare against yet. From tomorrow it will only report "
+            "genuine differences."
+        )
+    elif baq_o and baq_n and baq_o[0].get("PHARMACY PA STATUS") == "Y" \
             and baq_n[0].get("PHARMACY PA STATUS") == "N":
         paras.append(
             "Until now, Baqsimi was the only rescue glucagon in Washington that "
@@ -294,7 +310,7 @@ def _why(old, new, changes):
             "Baqsimi-specific restriction, not a rule about the drug class. From "
             "this date no rescue glucagon requires prior auth."
         )
-    if baq_o and baq_n and baq_o[0].get("NON CLINICAL TYPE") == "RAFORM" \
+    if not first_run and baq_o and baq_n and baq_o[0].get("NON CLINICAL TYPE") == "RAFORM" \
             and not baq_n[0].get("NON CLINICAL TYPE"):
         paras.append(
             "The restriction on Baqsimi was a route-of-administration "
@@ -302,23 +318,35 @@ def _why(old, new, changes):
             "published a policy saying what would satisfy it, so a prescriber had "
             "no criteria to submit against. That is now cleared."
         )
-    for label in sorted({c[2] for c in changes}):
-        cat = classify(label)
-        if cat == "baqsimi":
-            continue
-        cl = [c for c in changes if c[2] == label]
-        if cat == "generic" and any(c[3] == "NUMBER OF PREFERRED"
-                                    and not c[4].strip() and c[5].strip() for c in cl):
-            n = [c[5] for c in cl if c[3] == "NUMBER OF PREFERRED" and c[5].strip()][0]
-            paras.append(
-                f"The generic rescue glucagon has moved behind {n} preferred "
-                "products. A prescription for generic glucagon now has to fail on "
-                "preferred options before it will cover, which shifts volume "
-                "toward Baqsimi and Gvoke."
-            )
-        elif cat == "brand_rival":
-            paras.append("Gvoke's listing has changed. It is the product Baqsimi "
-                         "competes with most directly on access.")
+
+    # One paragraph per PRODUCT, not per label. Gvoke HypoPen 1-Pack and 2-Pack
+    # are the same product, and saying the same sentence five times reads as a
+    # fault in the tool rather than a finding.
+    # One paragraph per PRODUCT CLASS, not per label, and built from every
+    # label of that class at once. Gvoke HypoPen 1-Pack and 2-Pack are the same
+    # product; saying the same sentence once per label reads as a fault in the
+    # tool rather than a finding.
+    rivals = [c[2] for c in changes if classify(c[2]) == "brand_rival"]
+    if rivals:
+        forms = sorted({c[2] for c in changes if classify(c[2]) == "brand_rival"})
+        paras.append(
+            f"Gvoke's listing has changed ({len(forms)} product forms affected: "
+            f"{', '.join(forms)}). It is the product Baqsimi competes with most "
+            "directly on access."
+        )
+
+    generic_cl = [c for c in changes if classify(c[2]) == "generic"]
+    if any(c[3] == "NUMBER OF PREFERRED" and not c[4].strip() and c[5].strip()
+           for c in generic_cl):
+        steps = {c[5] for c in generic_cl
+                 if c[3] == "NUMBER OF PREFERRED" and c[5].strip()}
+        n = sorted(steps)[0] if len(steps) == 1 else ", ".join(sorted(steps))
+        paras.append(
+            f"The generic rescue glucagon has moved behind {n} preferred "
+            "products. A prescription for generic glucagon now has to fail on "
+            "preferred options before it will cover, which shifts volume "
+            "toward Baqsimi and Gvoke."
+        )
     return paras or ["No change affects access to rescue glucagon."]
 
 

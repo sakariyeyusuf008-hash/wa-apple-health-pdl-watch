@@ -214,5 +214,40 @@ added = brief.model(OLD, NEW,
 check("verdict is REVIEW", added["products"][0]["verdict"], "REVIEW")
 check("verdict text asks for a human", "human" in brief.VERDICT["REVIEW"][1], True)
 
+print("\n9. an empty baseline is not mistaken for a brand new product")
+EMPTY = {"effective": "?", "drugs": {}}
+first = brief.baqsimi_headline(EMPTY, NEW)
+check("headline does not claim Baqsimi was added",
+      "ADDED to the list" in first, False)
+check("headline says it is a first reading",
+      "nothing to compare against" in first, True)
+check("headline does not claim a PA change",
+      "no longer requires" in first, False)
+
+m9 = brief.model(EMPTY, NEW,
+    [("ADDED", "00548835101", "BAQSIMI", "", "", "")], lambda c: "raw")
+check("why-it-matters admits there is nothing to compare",
+      "first reading" in m9["why"][0].lower(), True)
+check("no false PA history is invented",
+      "only rescue glucagon in Washington" not in " ".join(m9["why"]), True)
+
+print("\n10. one paragraph per product, not per label")
+many = [("CHANGED", f"7206501{i:04d}", f"GVOKE HYPOPEN {i}-PACK",
+         "PHARMACY PA STATUS", "N", "Y") for i in range(1, 6)]
+m10 = brief.model(OLD, NEW, many, lambda c: "raw")
+g = [p for p in m10["why"] if "Gvoke's listing has changed" in p]
+check("five Gvoke labels produce one paragraph", len(g), 1)
+check("the count of affected forms is stated", "5 product forms" in g[0], True)
+t = brief.build_text(m10)
+check("the repeated sentence appears once in the rendered brief",
+      t.count("Gvoke's listing has changed"), 1)
+
+print("\n11. the generic paragraph is also stated once")
+gen = [("CHANGED", f"003788065{i}", "GLUCAGON EMERGENCY KIT",
+        "NUMBER OF PREFERRED", "", "2") for i in range(3)]
+m11 = brief.model(OLD, NEW, gen, lambda c: "raw")
+check("three generic labels produce one paragraph",
+      len([p for p in m11["why"] if "generic rescue glucagon" in p]), 1)
+
 print(f"\n{'=' * 62}\n  {passed} passed, {failed} failed\n{'=' * 62}")
 sys.exit(1 if failed else 0)

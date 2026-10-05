@@ -11,11 +11,6 @@ on:
   # lets you run it by hand from the Actions tab, which is the fastest way to
   # confirm the setup works
   workflow_dispatch:
-  # TEMPORARY - end-to-end retest. Fires on the test commit so the alert goes
-  # out without anyone pressing a button. Removed straight after.
-  push:
-    paths:
-      - baseline.json
 
 permissions:
   contents: write   # commit the updated baseline back

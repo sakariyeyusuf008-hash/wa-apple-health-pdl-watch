@@ -1,6 +1,20 @@
 {
   "current": {
     "drugs": {
+      "00169191201": {
+        "AHPDL INCLUSION": "Y",
+        "COVERAGE TYPE": "CP",
+        "DOSE FORM": "AUTO INJCT",
+        "LABEL NAME": "ZEGALOGUE AUTOINJECTOR",
+        "MCO CARVE OUT": "N",
+        "NDC": "00169191201",
+        "NON CLINICAL TYPE": "MEDNEC",
+        "NUMBER OF PREFERRED": "",
+        "PA POLICY NUMBER": "",
+        "PHARMACY PA STATUS": "Y",
+        "PHARMACY PREFERRED STATUS": "N",
+        "STRENGTH": "0.6 MG/0.6"
+      },
       "00169191202": {
         "AHPDL INCLUSION": "Y",
         "COVERAGE TYPE": "CP",
@@ -18,8 +32,8 @@
       "00169191301": {
         "AHPDL INCLUSION": "Y",
         "COVERAGE TYPE": "CP",
-        "DOSE FORM": "AUTO INJCT",
-        "LABEL NAME": "ZEGALOGUE AUTOINJECTOR",
+        "DOSE FORM": "SYRINGE",
+        "LABEL NAME": "ZEGALOGUE SYRINGE",
         "MCO CARVE OUT": "N",
         "NDC": "00169191301",
         "NON CLINICAL TYPE": "MEDNEC",
@@ -43,19 +57,19 @@
         "PHARMACY PREFERRED STATUS": "N",
         "STRENGTH": "0.6 MG/0.6"
       },
-      "00169200190": {
+      "00378806532": {
         "AHPDL INCLUSION": "Y",
         "COVERAGE TYPE": "CP",
-        "DOSE FORM": "SYRINGE",
-        "LABEL NAME": "ZEGALOGUE SYRINGE",
+        "DOSE FORM": "VIAL",
+        "LABEL NAME": "GLUCAGON EMERGENCY KIT",
         "MCO CARVE OUT": "N",
-        "NDC": "00169200190",
-        "NON CLINICAL TYPE": "MEDNEC",
-        "NUMBER OF PREFERRED": "",
+        "NDC": "00378806532",
+        "NON CLINICAL TYPE": "",
+        "NUMBER OF PREFERRED": "2",
         "PA POLICY NUMBER": "",
-        "PHARMACY PA STATUS": "Y",
+        "PHARMACY PA STATUS": "N",
         "PHARMACY PREFERRED STATUS": "N",
-        "STRENGTH": "0.6 MG/0.6"
+        "STRENGTH": "1 MG"
       },
       "00378806790": {
         "AHPDL INCLUSION": "Y",
@@ -71,13 +85,13 @@
         "PHARMACY PREFERRED STATUS": "N",
         "STRENGTH": "1 MG"
       },
-      "00378807849": {
+      "00548585000": {
         "AHPDL INCLUSION": "Y",
         "COVERAGE TYPE": "CP",
         "DOSE FORM": "VIAL",
         "LABEL NAME": "GLUCAGON EMERGENCY KIT",
         "MCO CARVE OUT": "N",
-        "NDC": "00378807849",
+        "NDC": "00548585000",
         "NON CLINICAL TYPE": "",
         "NUMBER OF PREFERRED": "2",
         "PA POLICY NUMBER": "",
@@ -85,13 +99,13 @@
         "PHARMACY PREFERRED STATUS": "N",
         "STRENGTH": "1 MG"
       },
-      "00548590000": {
+      "00548590500": {
         "AHPDL INCLUSION": "Y",
         "COVERAGE TYPE": "CP",
         "DOSE FORM": "VIAL",
         "LABEL NAME": "GLUCAGON EMERGENCY KIT",
         "MCO CARVE OUT": "N",
-        "NDC": "00548590000",
+        "NDC": "00548590500",
         "NON CLINICAL TYPE": "",
         "NUMBER OF PREFERRED": "2",
         "PA POLICY NUMBER": "",
@@ -102,16 +116,16 @@
       "00548835101": {
         "AHPDL INCLUSION": "Y",
         "COVERAGE TYPE": "CP",
-        "DOSE FORM": "VIAL",
-        "LABEL NAME": "GLUCAGON EMERGENCY KIT",
+        "DOSE FORM": "SPRAY",
+        "LABEL NAME": "BAQSIMI",
         "MCO CARVE OUT": "N",
         "NDC": "00548835101",
         "NON CLINICAL TYPE": "",
-        "NUMBER OF PREFERRED": "2",
+        "NUMBER OF PREFERRED": "",
         "PA POLICY NUMBER": "",
         "PHARMACY PA STATUS": "N",
-        "PHARMACY PREFERRED STATUS": "N",
-        "STRENGTH": "1 MG"
+        "PHARMACY PREFERRED STATUS": "P",
+        "STRENGTH": "3 MG"
       },
       "00548835112": {
         "AHPDL INCLUSION": "Y",
@@ -141,25 +155,25 @@
         "PHARMACY PREFERRED STATUS": "P",
         "STRENGTH": "3 MG"
       },
-      "00548909010": {
+      "63323058282": {
         "AHPDL INCLUSION": "Y",
         "COVERAGE TYPE": "CP",
-        "DOSE FORM": "SPRAY",
-        "LABEL NAME": "BAQSIMI",
+        "DOSE FORM": "VIAL",
+        "LABEL NAME": "GLUCAGON EMERGENCY KIT",
         "MCO CARVE OUT": "N",
-        "NDC": "00548909010",
+        "NDC": "63323058282",
         "NON CLINICAL TYPE": "",
-        "NUMBER OF PREFERRED": "",
+        "NUMBER OF PREFERRED": "2",
         "PA POLICY NUMBER": "",
         "PHARMACY PA STATUS": "N",
-        "PHARMACY PREFERRED STATUS": "P",
-        "STRENGTH": "3 MG"
+        "PHARMACY PREFERRED STATUS": "N",
+        "STRENGTH": "1 MG"
       },
       "63323058313": {
         "AHPDL INCLUSION": "Y",
         "COVERAGE TYPE": "CP",
         "DOSE FORM": "VIAL",
-        "LABEL NAME": "GLUCAGON EMERGENCY KIT",
+        "LABEL NAME": "GLUCAGON HCL",
         "MCO CARVE OUT": "N",
         "NDC": "63323058313",
         "NON CLINICAL TYPE": "",
@@ -169,13 +183,13 @@
         "PHARMACY PREFERRED STATUS": "N",
         "STRENGTH": "1 MG"
       },
-      "63323058421": {
+      "69097002750": {
         "AHPDL INCLUSION": "Y",
         "COVERAGE TYPE": "CP",
         "DOSE FORM": "VIAL",
-        "LABEL NAME": "GLUCAGON HCL",
+        "LABEL NAME": "GLUCAGON EMERGENCY KIT",
         "MCO CARVE OUT": "N",
-        "NDC": "63323058421",
+        "NDC": "69097002750",
         "NON CLINICAL TYPE": "",
         "NUMBER OF PREFERRED": "2",
         "PA POLICY NUMBER": "",
@@ -197,13 +211,13 @@
         "PHARMACY PREFERRED STATUS": "N",
         "STRENGTH": "1 MG"
       },
-      "69097002931": {
+      "70748030901": {
         "AHPDL INCLUSION": "Y",
         "COVERAGE TYPE": "CP",
         "DOSE FORM": "VIAL",
         "LABEL NAME": "GLUCAGON EMERGENCY KIT",
         "MCO CARVE OUT": "N",
-        "NDC": "69097002931",
+        "NDC": "70748030901",
         "NON CLINICAL TYPE": "",
         "NUMBER OF PREFERRED": "2",
         "PA POLICY NUMBER": "",
@@ -225,25 +239,25 @@
         "PHARMACY PREFERRED STATUS": "N",
         "STRENGTH": "1 MG"
       },
-      "70748032211": {
+      "72065012011": {
         "AHPDL INCLUSION": "Y",
         "COVERAGE TYPE": "CP",
-        "DOSE FORM": "VIAL",
-        "LABEL NAME": "GLUCAGON EMERGENCY KIT",
+        "DOSE FORM": "AUTO INJCT",
+        "LABEL NAME": "GVOKE HYPOPEN 1-PACK",
         "MCO CARVE OUT": "N",
-        "NDC": "70748032211",
+        "NDC": "72065012011",
         "NON CLINICAL TYPE": "",
-        "NUMBER OF PREFERRED": "2",
+        "NUMBER OF PREFERRED": "",
         "PA POLICY NUMBER": "",
         "PHARMACY PA STATUS": "N",
-        "PHARMACY PREFERRED STATUS": "N",
-        "STRENGTH": "1 MG"
+        "PHARMACY PREFERRED STATUS": "P",
+        "STRENGTH": "0.5 MG/0.1"
       },
       "72065012012": {
         "AHPDL INCLUSION": "Y",
         "COVERAGE TYPE": "CP",
         "DOSE FORM": "AUTO INJCT",
-        "LABEL NAME": "GVOKE HYPOPEN 1-PACK",
+        "LABEL NAME": "GVOKE HYPOPEN 2-PACK",
         "MCO CARVE OUT": "N",
         "NDC": "72065012012",
         "NON CLINICAL TYPE": "",
@@ -257,7 +271,7 @@
         "AHPDL INCLUSION": "Y",
         "COVERAGE TYPE": "CP",
         "DOSE FORM": "AUTO INJCT",
-        "LABEL NAME": "GVOKE HYPOPEN 2-PACK",
+        "LABEL NAME": "GVOKE HYPOPEN 1-PACK",
         "MCO CARVE OUT": "N",
         "NDC": "72065012111",
         "NON CLINICAL TYPE": "",
@@ -265,13 +279,13 @@
         "PA POLICY NUMBER": "",
         "PHARMACY PA STATUS": "N",
         "PHARMACY PREFERRED STATUS": "P",
-        "STRENGTH": "0.5 MG/0.1"
+        "STRENGTH": "1 MG/0.2ML"
       },
       "72065012112": {
         "AHPDL INCLUSION": "Y",
         "COVERAGE TYPE": "CP",
         "DOSE FORM": "AUTO INJCT",
-        "LABEL NAME": "GVOKE HYPOPEN 1-PACK",
+        "LABEL NAME": "GVOKE HYPOPEN 2-PACK",
         "MCO CARVE OUT": "N",
         "NDC": "72065012112",
         "NON CLINICAL TYPE": "",
@@ -284,8 +298,8 @@
       "72065013111": {
         "AHPDL INCLUSION": "Y",
         "COVERAGE TYPE": "CP",
-        "DOSE FORM": "AUTO INJCT",
-        "LABEL NAME": "GVOKE HYPOPEN 2-PACK",
+        "DOSE FORM": "SYRINGE",
+        "LABEL NAME": "GVOKE PFS 1-PACK SYRINGE",
         "MCO CARVE OUT": "N",
         "NDC": "72065013111",
         "NON CLINICAL TYPE": "",
@@ -299,7 +313,7 @@
         "AHPDL INCLUSION": "Y",
         "COVERAGE TYPE": "CP",
         "DOSE FORM": "SYRINGE",
-        "LABEL NAME": "GVOKE PFS 1-PACK SYRINGE",
+        "LABEL NAME": "GVOKE PFS 2-PACK SYRINGE",
         "MCO CARVE OUT": "N",
         "NDC": "72065013112",
         "NON CLINICAL TYPE": "",
@@ -312,8 +326,8 @@
       "72065014011": {
         "AHPDL INCLUSION": "Y",
         "COVERAGE TYPE": "CP",
-        "DOSE FORM": "SYRINGE",
-        "LABEL NAME": "GVOKE PFS 2-PACK SYRINGE",
+        "DOSE FORM": "VIAL",
+        "LABEL NAME": "GVOKE",
         "MCO CARVE OUT": "N",
         "NDC": "72065014011",
         "NON CLINICAL TYPE": "",
@@ -330,20 +344,6 @@
         "LABEL NAME": "GVOKE",
         "MCO CARVE OUT": "N",
         "NDC": "72065014111",
-        "NON CLINICAL TYPE": "",
-        "NUMBER OF PREFERRED": "",
-        "PA POLICY NUMBER": "",
-        "PHARMACY PA STATUS": "N",
-        "PHARMACY PREFERRED STATUS": "P",
-        "STRENGTH": "1 MG/0.2ML"
-      },
-      "72078000200": {
-        "AHPDL INCLUSION": "Y",
-        "COVERAGE TYPE": "CP",
-        "DOSE FORM": "VIAL",
-        "LABEL NAME": "GVOKE",
-        "MCO CARVE OUT": "N",
-        "NDC": "72078000200",
         "NON CLINICAL TYPE": "",
         "NUMBER OF PREFERRED": "",
         "PA POLICY NUMBER": "",
